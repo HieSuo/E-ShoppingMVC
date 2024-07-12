@@ -1,0 +1,43 @@
+﻿
+<div class="menu-icon">
+    <a class="" href="#" onclick="toggle_dropdown(this); return false" role="button" class="dropdown-toggle">
+        <i class="fa fa-bell"></i>
+        <span class="badge badge-danger" style="width=5px;">@TempData.Keys.Count</span>
+    </a>
+    <div class="dropdown dropdown-left bg-white shadow border">
+        <a class="dropdown-item" href="#"><strong>Notifications</strong></a>
+        @if (TempData["success"] != null)
+        {
+            <a href="#" class="dropdown-item">
+                <div class="media alert alert-success notification">
+                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-warning">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="media-body">
+                        <h6 class="mt-0"><strong>Success</strong></h6>
+                        <p>@TempData["success"]</p>
+                        <small class="text-success">now</small>
+                    </div>
+                </div>
+            </a>
+        }
+        @if (TempData["error"] != null)
+        {
+            <a href="#" class="dropdown-item">
+                <div class="media alert alert-danger notification">
+                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-warning">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="media-body">
+                        <h6 class="mt-0"><strong>Erro</strong></h6>
+                        <p>@TempData["error"]</p>
+                        <small class="text-success">now</small>
+                    </div>
+                </div>
+            </a>
+        }
+        
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item text-center link-all" href="#">See all notifications ></a>
+    </div>
+</div>

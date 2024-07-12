@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model SizeModel
+@{
+    ViewData["title"] = "Edit size";
+}
+<div class="col-sm-12 col-xs-12 content pt-3 pl-0">
+    <h5 class="mb-0"><strong>@ViewData["title"]</strong></h5>
+    <span class="text-secondary">Prodcuts Manager <i class="fa fa-angle-right"></i> Attribute's Products <i class="fa fa-angle-right"></i> Create</span>
+    <form class="mt-2" asp-controller="Attribute" asp-action="EditSize">
+        @* //hidden id
+        *@
+        <input asp-for="Id" type="hidden" />
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Color's Name</label>
+            <div class="col-sm-6">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <a asp-action="Index" asp-controller="Attribute" class="mr-1">
+                <button type="button" class="btn btn-secondary btn-round">Cancel</button>
+            </a>
+            <button type="submit" class="btn btn-success btn-round">Update</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

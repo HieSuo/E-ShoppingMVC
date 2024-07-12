@@ -1,0 +1,69 @@
+﻿@using E_ShoppingMVC.Areas.Admin.Models.ViewModels
+@model ProductItemModel
+@{
+    ViewData["title"] = "Update product item";
+}
+<div class="col-sm-12 col-xs-12 content pt-3 pl-0">
+    <h5 class="mb-0"><strong>@ViewData["title"]</strong></h5>
+    <span class="text-secondary">Prodcuts Manager <i class="fa fa-angle-right"></i> Attribute's Products <i class="fa fa-angle-right"></i> Create</span>
+
+    <form class="mt-2" asp-controller="Product" asp-action="EditProductItem">
+        <input type="hidden" asp-for="@Model.Id"/>
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Product</label>
+            <div class="col-sm-6">
+                <input class="form-control" value="@Model.Product.Name" readonly />
+                <input type="hidden" asp-for="@Model.ProductId"/>
+               
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Size</label>
+            <div class="col-sm-6">
+                <select class="form-control" asp-for="@Model.SizeId" asp-items="ViewBag.Sizes">
+                    <option value="">Choose ...</option>
+                </select>
+                <span asp-validation-for="@Model.SizeId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Color</label>
+            <div class="col-sm-6">
+                <select class="form-control" asp-for="@Model.ColorId" asp-items="ViewBag.Colors">
+                    <option value="">Choose ...</option>
+
+                </select>
+                <span asp-validation-for="@Model.ColorId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Product's Price</label>
+            <div class="col-sm-6">
+                <input asp-for="@Model.Price" class="form-control" />
+                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Product's Quantity</label>
+            <div class="col-sm-6">
+                <input asp-for="@Model.Quantity" class="form-control" />
+                <span asp-validation-for="@Model.Quantity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <a asp-action="Detail" asp-controller="Product" asp-route-id="@Model.Product.Id" class="mr-1">
+                <button type="button" class="btn btn-secondary btn-round">Cancel</button>
+            </a>
+            <button type="submit" class="btn btn-success btn-round">Update</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

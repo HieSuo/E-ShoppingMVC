@@ -1,0 +1,134 @@
+﻿@using E_ShoppingMVC.Models.ViewModels
+@model IEnumerable<ProductModel>
+@{
+    ViewData["title"] = "Products Manager";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+    <h5 class="mb-0"><strong>Products</strong></h5>
+    <span class="text-secondary">Ecommerce <i class="fa fa-angle-right"></i> products</span>
+
+    <div class="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
+        <!--Product Listing-->
+        <div class="product-list">
+
+            <div class="row border-bottom mb-4">
+                <div class="col-sm-6 pt-2"><h6 class="mb-4 bc-header">Product listing |<a asp-action="Index">Back to full list</a></h6></div>
+                <div class="col-sm-6 text-right pb-3">
+                    <form class="d-inline mr-5" asp-action="Index" method="get" asp-controller="Product">
+                        <select class="col-sm-2 form-control btn-round d-inline" name="categoryFilter" id="categoryFilter">
+                        @{int n =(int) ViewData["CurrentCategory"]; }
+                        @foreach(var item in ViewBag.Categories)
+                        {
+                           
+                            @if (item.Id == n)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                        <input type="text" class="col-sm-3 form-control d-inline btn-round" name="searchString" value="@ViewData["CurrentFilter"]" />
+                        <button type="submit" class="btn btn-round"><i class="fa fa-search"></i></button>
+                    </form>
+                    <a asp-action="Create" asp-controller="Product" class="btn btn-round btn-theme"><i class="fa fa-plus"></i> Add product</a>
+                </div>
+            </div>
+
+            <div class="table-responsive product-list">
+
+                <table class="table table-bordered table-striped mt-3" id="productList">
+                    <thead>
+                        <tr>
+                            <th width="6%">Image</th>
+                        <th><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentCategory="@ViewData["CurrentCategory"]">ProductName</a></th>
+                            <th>Category</th>
+                            <th>Desciption</th>
+                            <th>Slug</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach(var item in Model)
+                    { 
+                        <tr>
+                            <td class="align-middle"><img src="~/media/products/@item.Image" width="80px" alt=""></td>
+                            <td class="align-middle">@item.Name</td>
+                            <td class="align-middle">@item.Category.Name</td>
+                            <td class="align-middle">@Html.Raw(item.Description)</td>
+                            <td class="align-middle">@item.Slug</td>
+                            <td class="align-middle text-center">
+                                <a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id" class="btn btn-theme"><i class="fa fa-eye"></i></a>
+                                <a asp-action="Edit" asp-controller="Product" asp-route-id="@item.Id" class="btn btn-success"><i class="fa fa-pencil"></i></a>
+                                <button onclick="confirmDelete(@item.Id)" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>  
+                    }
+                    </tbody>
+                </table>
+            
+            </div>
+        
+        </div>
+        <!--/Product Listing-->
+        <partial name="_Pager" model="@pager" />
+    </div>
+
+<!--Delete Modal-->
+<div id="deleteModal" class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title text-secondary"><strong> Confirm delete</strong></h5>
+                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-justify">
+                <p>Bạn chắc chắn muốn xóa sản phẩm này.</p>
+                <p>Lưu ý điều này sẽ ảnh hưởng đến những thông tin liên quản đến sản phẩm này, hãy cẩn trọng!!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="confirmDeleteButton" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var deleteId;
+        function confirmDelete(Id) {
+            deleteId = Id;
+            $('#deleteModal').modal('show');
+        }
+        $('#confirmDeleteButton').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: 'Product/Delete',
+                data: { id: deleteId },
+                success: function (response) {
+                    if (response.success) {
+                        window.location.reload();
+                    } else {
+                        alert("An error deleting");
+                    }
+                }
+            });
+        });
+       
+
+
+    </script>
+}
+
+

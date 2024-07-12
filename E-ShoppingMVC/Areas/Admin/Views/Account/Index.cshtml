@@ -1,0 +1,117 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using E_ShoppingMVC.Areas.Admin.Models.ViewModels
+@model UserRoleViewModel
+@{
+    ViewData["title"] = "Quản lý quyền sử dụng hệ thống";
+}
+
+<div class="col-sm-12 col-xs-12 content pt-3 pl-0">
+    <h5 class="mb-0"><strong>@ViewData["title"]</strong></h5>
+    <span class="text-secondary">Prodcuts Manager <i class="fa fa-angle-right"></i> User roles</span>
+
+    <div class="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
+        <!--Order Listing-->
+        <div class="product-list">
+
+            <div class="row border-bottom mb-4">
+                <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header">Accounts Listing</h6></div>
+                <div class="col-sm-4 pb-3">
+                    <input type="text" class="col-sm-9 form-control d-inline btn-round" name="keyword" placeholder="Tìm kiếm " />
+                    <button type="submit" class="btn btn-round"><i class="fa fa-search"></i></button>
+                    <a class="btn btn-success icon-round shadow pull-right d-inline" asp-action="Create" asp-controller="Account">
+                        <i class="fas fa-plus"></i>
+                    </a>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="table-responsive product-list">
+
+                <table class="table table-bordered table-striped mt-3" id="productList">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>UserName</th>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>Email</th>
+                            <th>PhoneNumber</th>
+                            <th>Roles</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 0;
+                        }
+                        @foreach(var user in Model.appUserModels)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@user.UserName</td>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.Email</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@Model.ListRoles[i++]</td>
+                                <td>
+                                <a class="btn btn-success btn-round" asp-action="Edit" asp-controller="Account" asp-route-id="@user.Id"><i class="fa fa-pencil"></i></a>
+                                    <button class="btn btn-danger btn-round" id="deleteModal"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--DeleteModal-->
+<div id="deleteModal" class="modal fade bd-example-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title text-secondary"><strong> Confirm delete</strong></h5>
+                <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body text-justify">
+                <p>Bạn chắc chắn muốn xóa role này.</p>
+                <p>Lưu ý điều này sẽ ảnh hưởng đến những người dung liên quan đến role này, hãy cẩn trọng!!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="confirmDeleteButton" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Default modal-->
+@section Scripts {
+    <script>
+        var deleteId;
+        function confirmDelete(Id) {
+            deleteId = Id;
+            $('#deleteModal').modal('show');
+        }
+        $('#confirmDeleteButton').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: 'Account/Delete',
+                data: { id: deleteId },
+                success: function (response) {
+                    if (response.success) {
+                        window.location.reload();
+                    } else {
+                        alert("An error deleting");
+                    }
+                }
+            });
+        });
+
+
+    </script>
+}

@@ -1,0 +1,229 @@
+﻿@using E_ShoppingMVC.Areas.Admin.Models.ViewModels
+@model ProductDetailModelView
+@{
+    ViewData["title"] = "Product detail";
+}
+<h5 class="mb-0"><strong>Product detail</strong></h5>
+<span class="text-secondary">Ecommerce <i class="fa fa-angle-right"></i> product detail</span>
+
+<div class="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
+    <!--Product detail-->
+    <div class="product-list">
+        <div class="row">
+            <div class="col-sm-5">
+                <!--<img src="~/media/products/@Model.Product.Image" width="100%"/>-->
+                <!--Custom tabs preview product image-->
+                <div class="mt-1 mb-3 p-3 button-container border bg-white shadow-sm custom-tabs">
+
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-customContent">
+                        <div class="tab-pane fade show active" id="custom-home" role="tabpanel" aria-labelledby="nav-home">
+                            <img src="~/media/products/@Model.Product.Image" width="100%" />
+                        </div>
+                        @if (Model.ProductImages.Count > 0)
+                        {
+                            foreach (var img in Model.ProductImages)
+                            {
+                                <div class="tab-pane fade" id="custom-@img.Id" role="tabpanel" aria-labelledby="nav-@img.Id">
+                                    <a class="btn btn-danger" asp-action="DeleteProductImage" asp-route-id="@img.Id" asp-controller="Product" style="position: absolute; color: #fff"><i class="fas fa-trash"></i></a>
+                                    <img src="~/media/products/@img.ProductImage" width="100%" />
+                                </div>
+                            }
+                        }
+                    </div>
+                   
+                    <nav>
+                        <div class="nav nav-tabs nav-fill" id="nav-customContent" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home" data-toggle="tab" href="#custom-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                                <img src="~/media/products/@Model.Product.Image" width="50px" />
+                            </a>
+                            @if (Model.ProductImages.Count > 0)
+                            {
+                                foreach(var img in Model.ProductImages)
+                                {
+                                    <a class="nav-item nav-link" id="nav-@img.Id" data-toggle="tab" href="#custom-@img.Id" role="tab" aria-controls="nav-@img.Id" aria-selected="false">
+                                        <img src="~/media/products/@img.ProductImage" width="50px" />
+                                    </a>
+                                    
+                                }
+                                
+                            }
+                            
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+
+            <div class="col-sm-7" height="200px">
+                <h3>@Model.Product.Name</h3> 
+                <p>Descritpion</p>
+                <textarea asp-for="@Model.Product.Description" id="Description"></textarea>
+                <p>Product's Images</p>
+                <input type="hidden" name="ProductId" id="ProductUploadID" value="@Model.Product.Id"/>
+                <input type="file" name="ImageUpload" id="ImageUpload" />
+                <button type="submit" id="uploadButton">Upload</button>
+            </div>
+
+        </div>
+
+    </div>
+    <!--Product Detail-->
+</div>
+
+<div class="mt-4 mb-4 p-3 bg-white button-container border shadow-sm">
+    <div class="product-list custom-tabs">
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-customContent" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home" data-toggle="tab" href="#tab-sku" role="tab" aria-controls="nav-home" aria-selected="true" style="color: #000"> Reviews</a>
+
+                <a class="nav-item nav-link" id="nav-profile" data-toggle="tab" href="#tab-review" role="tab" aria-controls="nav-profile" aria-selected="false" style="color: #000">Description</a>
+
+                <a class="nav-item nav-link" id="nav-contact" data-toggle="tab" href="#tab-contact" role="tab" aria-controls="nav-contact" aria-selected="false" style="color: #000">Size Guide</a>
+            </div>
+        </nav>
+
+        <div class="tab-content py-3 px-3 px-sm-0" id="nav-customContent">
+            <div class="tab-pane fade show active p-3" id="tab-sku" role="tabpanel" aria-labelledby="nav-home">
+                <div class="row border-bottom mb-4">
+                    <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header">Product items Listing</h6></div>
+                    <div class="col-sm-4 pb-3">
+
+                        <a class="btn btn-success icon-round shadow pull-right d-inline" asp-action="CreateProductItem" asp-controller="Product" asp-route-id="@Model.Product.Id">
+                            <i class="fas fa-plus"></i>
+                        </a>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="table-responsive product-list">
+
+                    <table class="table table-bordered table-striped mt-3" id="productList">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>SKU</th>
+                                <th>Size</th>
+                                <th>Color</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ProductItems)
+                            {
+
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.SKU</td>
+                                    <td style="background-color: @item.Color.HexCode">@item.Color.Name</td>
+                                    <td>@item.Size.Name</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.Quantity</td>
+                                    <td class="align-middle text-center">
+                                        <a class="btn btn-success" asp-action="EditProductItem" asp-controller="Product" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-danger" asp-action="DeleteProductItem" asp-controller="Product" asp-route-id="@item.Id"><i class="fas fa-trash"></i></a>
+                                    </td>
+
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+                
+               
+
+            </div>
+            <!--/Stock product item tab-->
+            <!--Personal info tab-->
+            <div class="tab-pane fade p-3" id="tab-review" role="tabpanel" aria-labelledby="nav-profile">
+                <!--Single feed-->
+                <div class="feed-single mb-3">
+                    <div class="media">
+                        <img class="mr-3 rounded-circle" height="40px" width="40px" src="~/assets/img/John-doe.png" alt="Generic placeholder image">
+                        <div class="media-body">
+                            <h6 class="mt-1">
+                                Jay Shetty
+                                <small class="text-muted pl-3"><i class="fa fa-clock"></i> 2 weeks</small>
+
+                                <p class="clearfix"></p>
+                            </h6>
+
+                            <div class="user-rating">
+                                <select class="reviewRating">
+                                    <option value="1">1</option>
+                                    <option value="2" selected>2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+
+                            <p>Good quality material, insulates well. There is room for improvement.</p>
+
+                            <div class="feed-footer">
+                                <span class="pr-3 text-success">
+                                    <i class="fa fa-check-circle"></i>
+                                    Verified Purchase
+                                </span>
+
+                                <p class="clearfix"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+            <!--/Personal info tab-->
+            <!--Resume tab-->
+            <div class="tab-pane fade p-3" id="tab-contact" role="tabpanel" aria-labelledby="nav-contact">
+
+                hehe
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <!--Bar rating-->
+    <script src="~/assets/js/jquery.barrating.min.js"></script>
+    <script>
+        $("#ImageUpload").change(function () {
+            readURL(this)
+        })
+        $("#uploadButton").click(function(){
+            var id = @Model.Product.Id;
+            console.log(id);
+            var imageFile = $('#ImageUpload')[0].files[0];
+            var formData = new FormData();
+            formData.append("image", imageFile);
+            formData.append("productId", id);
+            $.ajax({
+                url: "@Url.Action("AddImage","Product")",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        window.location.reload();
+                    } else {
+                        alert("An error add image");
+                    }
+                }
+            })
+        })
+    </script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+}

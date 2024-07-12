@@ -1,0 +1,19 @@
+﻿@model IEnumerable<CategoryModel>
+@foreach (var item in Model)
+{
+    <div class="card">
+        <div class="card-heading">
+            <a data-toggle="collapse" data-target="@("#collapse" + item.Id)">@item.Name</a>
+        </div>
+        <div id="@("collapse"+item.Id)" class="collapse show" data-parent="#accordionExample">
+            <div class="card-body">
+                <div class="shop__sidebar__categories">
+                    <ul class="nice-scroll">
+                        <vc:sub-categories id="@item.Id"></vc:sub-categories>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

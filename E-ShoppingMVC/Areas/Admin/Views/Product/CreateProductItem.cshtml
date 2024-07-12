@@ -1,0 +1,67 @@
+﻿@using E_ShoppingMVC.Areas.Admin.Models.ViewModels
+@model CreateProductItemViewModel
+@{
+    ViewData["title"] = "Create product item";
+}
+<div class="col-sm-12 col-xs-12 content pt-3 pl-0">
+    <h5 class="mb-0"><strong>@ViewData["title"]</strong></h5>
+    <span class="text-secondary">Prodcuts Manager <i class="fa fa-angle-right"></i> Attribute's Products <i class="fa fa-angle-right"></i> Create</span>
+    
+    <form class="mt-2" asp-controller="Product" asp-action="CreateProductItem">
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Product</label>
+            <div class="col-sm-6">
+                <input class ="form-control" asp-for="@Model.ProductItem.ProductId" value="@Model.Product.Id" placeholder="@Model.Product.Name" readonly />
+                <span asp-validation-for="@Model.ProductItem.ProductId" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Color</label>
+            <div class="col-sm-6">
+                <select class="form-control" asp-for="@Model.ProductItem.ColorId" asp-items="ViewBag.Colors">
+                    <option value="">Choose ...</option>
+                   
+                </select>
+                <span asp-validation-for="@Model.ProductItem.ColorId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Size</label>
+            <div class="col-sm-6">
+                <select class="form-control" asp-for="@Model.ProductItem.SizeId" asp-items="ViewBag.Sizes">
+                    <option value="">Choose ...</option>
+                </select>
+                <span asp-validation-for="@Model.ProductItem.SizeId" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Product's Price</label>
+            <div class="col-sm-6">
+                <input asp-for="@Model.ProductItem.Price" class="form-control" />
+                <span asp-validation-for="@Model.ProductItem.Price" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-sm-2">Product's Quantity</label>
+            <div class="col-sm-6">
+                <input asp-for="@Model.ProductItem.Quantity" class="form-control" />
+                <span asp-validation-for="@Model.ProductItem.Quantity" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <a asp-action="Detail" asp-controller="Product" asp-route-id="@Model.Product.Id" class="mr-1">
+                <button type="button" class="btn btn-secondary btn-round">Cancel</button>
+            </a>
+            <button type="submit" class="btn btn-success btn-round">Create</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
