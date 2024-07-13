@@ -36,9 +36,9 @@ namespace E_ShoppingMVC.Areas.Admin.Controllers
                 }
                 TempData["loginFailed"] = "Tài khoản hoặc mật khẩu không chính xác.";
                 ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không chính xác.");
-                return View(result);
+                return RedirectToAction("Index");
             }
-            return View(model);
+            return RedirectToAction("Index");
         }
         public async Task<IActionResult> Logout()
         {

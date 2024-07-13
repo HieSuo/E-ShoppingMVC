@@ -86,9 +86,11 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
+
+                                <partial name="_LoginPartial" />
                                 @if (User.Identity?.IsAuthenticated ?? false)
                                 {
-                                    <a asp-action="Profile" asp-controller="Account">Profile</a>
+                                    <a asp-action="Profile"  asp-controller="Account">Profile</a>
                                     <a asp-action="Logout" asp-controller="Account">Logout</a>
                                 }
                                 else
@@ -96,7 +98,7 @@
                                     <div class="header__top__hover">
                                         <span>Login <i class="arrow_carrot-down"></i></span>
                                         <ul>
-                                            <li><a asp-action="Login" asp-controller="Account">Login</a></li>
+                                            <li><a asp-action="Index" asp-area="Admin" asp-controller="Login">Login</a></li>
                                             <li><a asp-action="SignUp" asp-controller="Account">Sign up</a></li>
                                         </ul>
                                     </div>
