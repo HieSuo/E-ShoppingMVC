@@ -200,5 +200,9 @@ namespace E_ShoppingMVC.Areas.Admin.Controllers
             }
             return View(model);
         }
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            return Redirect(returnUrl);
+        }
     }
 }

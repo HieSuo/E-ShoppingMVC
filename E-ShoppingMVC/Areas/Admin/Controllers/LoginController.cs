@@ -32,7 +32,7 @@ namespace E_ShoppingMVC.Areas.Admin.Controllers
                 Microsoft.AspNetCore.Identity.SignInResult  result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
                 if (result.Succeeded)
                 {
-                    return Redirect(model.ReturnURL ?? "/");
+                    return Redirect(model.ReturnURL ?? "/Admin");
                 }
                 TempData["loginFailed"] = "Tài khoản hoặc mật khẩu không chính xác.";
                 ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không chính xác.");
