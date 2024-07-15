@@ -131,6 +131,10 @@ namespace E_ShoppingMVC.Controllers
                         return LocalRedirect(returnUrl);
                     }
                 }
+                else
+                {
+                    TempData["error"] = "tạo lỗi, vui lòng kiểm tra lại email." + result.ToString();
+                }
             
             }
             return View(model);
@@ -156,6 +160,12 @@ namespace E_ShoppingMVC.Controllers
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
             return View(result.Succeeded ? "ConfirmEmail" : "ErrorConfirmEmail");
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            return View();  
         }
     }
 }
