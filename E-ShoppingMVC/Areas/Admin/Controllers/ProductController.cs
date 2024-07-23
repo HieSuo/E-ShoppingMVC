@@ -193,6 +193,7 @@ namespace E_ShoppingMVC.Areas.Admin.Controllers
                 }
 
                 oldProduct.Name = product.Name;
+                oldProduct.Price = product.Price;
                 oldProduct.CategoryId = product.CategoryId;
                 oldProduct.Description = product.Description;
                 oldProduct.Slug = product.Slug;

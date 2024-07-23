@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using E_ShoppingMVC.Repository
+@using Microsoft.AspNetCore.Identity
+@using E_ShoppingMVC.Models
+@using Microsoft.EntityFrameworkCore
+@using System.Globalization
+@inject SignInManager<AppUserModel> _signInManager
+@inject UserManager<AppUserModel> _userManager
+@inject DataContext _context
+@{
+    int totalCartItems = 0;
+    decimal totalCartPrice = 0;
+}
+<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -11,7 +23,7 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
-          rel="stylesheet">
+    rel="stylesheet">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="~/webassets/css/bootstrap.min.css" type="text/css">
@@ -38,8 +50,14 @@
             <div class="offcanvas__links">
                 @if(User.Identity?.IsAuthenticated ?? false)
                 {
-                    <a asp-action="Profile" asp-controller="Account">Profile</a>
+                    <a asp-action="Index" asp-controller="Manage">@_userManager.GetUserName(User)</a>
                     <a asp-action="Logout" asp-controller="Account">Logout</a>
+                    {
+                        var cart = _context.ShoppingCarts.FirstOrDefault(c => c.UserId == _userManager.GetUserId(User));
+                        var list = _context.ShoppingCartItems.Include(c=>c.ProductItem).Where(c=>c.CartId == cart.Id ).ToList();
+                        totalCartItems = list.Count();
+                        totalCartPrice = list.Sum(s => s.ProductItem.Price*s.Quantity);
+                    }
                 }
                 else
                 {
@@ -64,7 +82,7 @@
         <div class="offcanvas__nav__option">
             <a href="#" class="search-switch"><img src="~/webassets/img/icon/search.png" alt=""></a>
             <a href="#"><img src="~/webassets/img/icon/heart.png" alt=""></a>
-            <a href="#"><img src="~/webassets/img/icon/cart.png" alt=""> <span>0</span></a>
+            <a asp-controller="Cart" asp-action="Index"><img src="~/webassets/img/icon/cart.png" alt=""> <span>0</span></a>
             <div class="price">$0.00</div>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -88,7 +106,7 @@
                             <div class="header__top__links">
                                 @if (User.Identity?.IsAuthenticated ?? false)
                                 {
-                                    <a asp-action="Profile" asp-controller="Account">Profile</a>
+                                    <a asp-action="Index" asp-controller="Manage">@_userManager.GetUserName(User)</a>
                                     <a asp-action="Logout" asp-controller="Account">Logout</a>
                                 }
                                 else
@@ -147,8 +165,8 @@
                     <div class="header__nav__option">
                         <a href="#" class="search-switch"><img src="~/webassets/img/icon/search.png" alt=""></a>
                         <a href="#"><img src="~/webassets/img/icon/heart.png" alt=""></a>
-                        <a href="#"><img src="~/webassets/img/icon/cart.png" alt=""> <span>0</span></a>
-                        <div class="price">$0.00</div>
+                        <a asp-controller="Cart" asp-action="Index"><img src="~/webassets/img/icon/cart.png" alt=""> <span>@totalCartItems</span></a>
+                        <div class="price">@totalCartPrice.ToString("C0", CultureInfo.GetCultureInfo("vn-VN"))</div>
                     </div>
                 </div>
             </div>
@@ -158,6 +176,8 @@
     <!-- Header Section End -->
    
     @RenderBody()
+
+
     <!-- Footer Section Begin -->
     <footer class="footer">
         <div class="container">

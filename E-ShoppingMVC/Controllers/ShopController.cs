@@ -67,7 +67,34 @@ namespace E_ShoppingMVC.Controllers
         }
         public async Task<IActionResult> ShopDetail(string slug)
         {
-            return View();
+            var product = await _dataContext.Products.FirstOrDefaultAsync(p=>p.Slug == slug);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            var sizes = await _dataContext.ProductItems
+                                    .Where(pi => pi.ProductId == product.Id)
+                                    .Select(pi => pi.Size)
+                                    .Distinct()
+                                    .ToListAsync();
+            var colors = await _dataContext.ProductItems.Where(pi => pi.ProductId == product.Id).Select(pi => pi.Color).Distinct().ToListAsync();
+            
+            var productItems = await _dataContext.ProductItems.Where(p => p.ProductId == product.Id).ToListAsync();
+            
+            var images = await _dataContext.ProductImages.Where(img => img.ProductId == product.Id).ToListAsync();
+
+            var recommendedProducts = await _dataContext.Products.Where(p=>p.CategoryId == product.CategoryId && p.Id != product.Id).Take(5).ToListAsync();
+            var viewModel = new ProductDetailViewModel
+            {
+                Product = product,
+                Sizes = sizes,
+                Colors = colors,
+                minPrice = productItems.Min(pi=> pi.Price),
+                Images = images,
+                RecommendedProducts = recommendedProducts,
+            };
+
+            return View(viewModel);
         }
     }
 }

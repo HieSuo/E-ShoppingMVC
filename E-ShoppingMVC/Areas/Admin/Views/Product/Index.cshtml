@@ -1,4 +1,5 @@
 ﻿@using E_ShoppingMVC.Models.ViewModels
+@using System.Globalization
 @model IEnumerable<ProductModel>
 @{
     ViewData["title"] = "Products Manager";
@@ -51,6 +52,7 @@
                             <th width="6%">Image</th>
                         <th><a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-currentCategory="@ViewData["CurrentCategory"]">ProductName</a></th>
                             <th>Category</th>
+                            <th>Price</th>
                             <th>Desciption</th>
                             <th>Slug</th>
                             <th>Action</th>
@@ -63,6 +65,7 @@
                             <td class="align-middle"><img src="~/media/products/@item.Image" width="80px" alt=""></td>
                             <td class="align-middle">@item.Name</td>
                             <td class="align-middle">@item.Category.Name</td>
+                            <td class="align-middle">@item.Price.ToString("C0", CultureInfo.GetCultureInfo("vi-VN"))</td>
                             <td class="align-middle">@Html.Raw(item.Description)</td>
                             <td class="align-middle">@item.Slug</td>
                             <td class="align-middle text-center">

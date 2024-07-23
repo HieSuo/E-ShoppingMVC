@@ -8,11 +8,13 @@ namespace E_ShoppingMVC.Models.Account
         [EmailAddress(ErrorMessage = "Sai định dạng Email")]
         [Display(Name = "Email")]
         public string Email { get; set; }
-        [Required(ErrorMessage ="Phải nhập  {0}")]
+        [Required(ErrorMessage ="Phải nhập {0}")]
         [Display(Name ="Họ")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Phải nhập  {0}")]
+        [Required(ErrorMessage = "Phải nhập {0}")]
+        [DataType(DataType.Text)]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage ="Chỉ được phép nhập chữ A-Z a-z.")]
         [Display(Name = "Tên")]
         public string LastName { get; set; }
 

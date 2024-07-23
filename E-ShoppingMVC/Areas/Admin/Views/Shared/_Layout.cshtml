@@ -184,6 +184,17 @@
                                     <li class="child"><a asp-controller ="Attribute" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Product's Attributes</a></li>
                                 </ul>
                             </li>
+                            <li class="parent">
+                                <a href="#" onclick="toggle_menu('Shipping_element'); return false" class="">
+                                    <i class="fa fa-pencil-square mr-3"></i>
+                                    <span class="none">Shipping Manager <i class="fa fa-angle-down pull-right align-bottom"></i></span>
+                                </a>
+                                <ul class="children" id="Shipping_element">
+                                    <li class="child"><a asp-controller="Shipping" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Shipping Options</a></li>
+                                    <li class="child"><a asp-controller="Product" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Shipping Method</a></li>
+                                    <li class="child"><a asp-controller="Attribute" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Bank Provider</a></li>
+                                </ul>
+                            </li>
 
 
                         </ul>
@@ -217,7 +228,7 @@
         <!--Main Content-->
       
     </div>
-
+    <script src="~/webassets/js/jquery-3.3.1.min.js"></script>
     <!--Page Wrapper-->
       <!--Datatable-->
     <script src="~/assets/js/jquery.dataTables.min.js"></script>
@@ -233,30 +244,11 @@
     <script src="~/assets/js/sweetalert.js"></script>
     <!--Progressbar JS-->
     <script src="~/assets/js/progressbar.min.js"></script>
-    <!--Flot.JS-->
-    <script src="~/assets/js/charts/jquery.flot.min.js"></script>
-    <script src="~/assets/js/charts/jquery.flot.pie.min.js"></script>
-    <script src="~/assets/js/charts/jquery.flot.categories.min.js"></script>
-    <script src="~/assets/js/charts/jquery.flot.stack.min.js"></script>
-    <!--Echarts-->
-    <script src="~/assets/js/charts/echarts.min.js"></script>
-    <script src="~/assets/js/charts/echarts-data.js"></script>
-    <!--Charts JS-->
-    <script src="~/assets/js/charts/chart.min.js"></script>
-    <script src="~/assets/js/charts/demo.js"></script>
-    <!--Maps-->
-    <script src="~/assets/js/maps/jquery-jvectormap-2.0.2.min.js"></script>
-    <script src="~/assets/js/maps/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="~/assets/js/maps/jvector-maps.js"></script>
     <!--Bootstrap Calendar JS-->
     <script src="~/assets/js/calendar/bootstrap_calendar.js"></script>
     <script src="~/assets/js/calendar/demo.js"></script>
     <!--Nice select-->
     <script src="~/assets/js/jquery.nice-select.min.js"></script>
-    <!--Form wizard-->
-    <script src="~/assets/js/jquery.bootstrap.wizard.js"></script>
-    <script src="~/assets/js/paper-bootstrap-wizard.js"></script>
-    <script src="~/assets/js/jquery.validate.min.js"></script>
     <!--Custom Js Script-->
     <script src="~/assets/js/custom.js"></script>
     <!--Custom Js Script-->

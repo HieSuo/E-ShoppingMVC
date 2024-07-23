@@ -356,6 +356,9 @@ namespace E_ShoppingMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 

@@ -27,18 +27,20 @@ namespace E_ShoppingMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
+            if (result.Succeeded)
             {
-                Microsoft.AspNetCore.Identity.SignInResult  result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
-                if (result.Succeeded)
-                {
-                    return Redirect(model.ReturnURL ?? "/Admin");
-                }
-                TempData["loginFailed"] = "Tài khoản hoặc mật khẩu không chính xác.";
-                ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không chính xác.");
-                return View(result);
+                return Redirect(model.ReturnURL ?? "/Admin");
             }
-            return View(model);
+            else if (result.IsLockedOut)
+            {
+                TempData["error"] = "Tài khoản đã bị khóa.";
+            }
+            else
+            {
+                TempData["error"] = "Sai tài khoản hoặc mật khẩu.";
+            }
+            return View("Index", model);
         }
         public async Task<IActionResult> Logout()
         {

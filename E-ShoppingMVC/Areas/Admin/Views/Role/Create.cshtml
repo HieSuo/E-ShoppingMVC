@@ -6,10 +6,16 @@
 @{
     ViewData["title"] = "Tạo role mới";
 }
+
 <div class="col-sm-12 col-xs-12 content pt-3 pl-0">
     <h5 class="mb-0"><strong>@ViewData["title"]</strong></h5>
     <span class="text-secondary">Account Manager <i class="fa fa-angle-right"></i> Roles <i class="fa fa-angle-right"></i> Create</span>
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
     <form class="mt-2" asp-controller="Role" asp-action="Create">
+
         <div class="form-group row">
             <label class="control-label col-sm-2">Role's Name</label>
             <div class="col-sm-6">

@@ -21,6 +21,9 @@
             <div class="col-md-6 col-sm-6 col-12 login-box-form p-4">
                 <h3 class="mb-2">Login</h3>
                 <small class="text-muted bc-description">Sign in with your credentials</small>
+                @if (TempData["error"]!=null){
+                    <div class="alert alert-danger">@TempData["error"]</div>
+                }
                 <form asp-controller="Login" asp-action="Login" class="mt-2">
                     <input asp-for="@Model.ReturnURL" type="hidden"/>
                     <div class="input-group mb-3">

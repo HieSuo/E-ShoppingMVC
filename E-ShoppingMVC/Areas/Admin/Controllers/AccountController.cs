@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace E_ShoppingMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
         private readonly DataContext _dataContext;
@@ -67,6 +67,11 @@ namespace E_ShoppingMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserViewModel model)
         {
+            if (!ModelState.IsValid || model.Email == null || model.Password  == null || model.UserName ==null)
+            {
+                TempData["error"] = "Lỗi khi thêm mới người dùng.";
+                return View(model);
+            }
             if (ModelState.IsValid)
             {
                 AppUserModel newUser = new AppUserModel
