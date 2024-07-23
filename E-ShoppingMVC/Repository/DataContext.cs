@@ -32,6 +32,7 @@ namespace E_ShoppingMVC.Repository
 		public DbSet<UserReviewModel> UserReviews { get; set; }
 
 		public DbSet<ProductImageModel> ProductImages { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<CategoryModel>()
