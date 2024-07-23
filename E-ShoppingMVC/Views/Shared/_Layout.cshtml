@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using E_ShoppingMVC.Models
+
+@inject SignInManager<AppUserModel> _signInManager
+@inject UserManager<AppUserModel> _userManager
+
+<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -38,7 +44,7 @@
             <div class="offcanvas__links">
                 @if(User.Identity?.IsAuthenticated ?? false)
                 {
-                    <a asp-action="Profile" asp-controller="Account">Profile</a>
+                    <a asp-action="Index" asp-controller="Manage">@_userManager.GetUserName(User)</a>
                     <a asp-action="Logout" asp-controller="Account">Logout</a>
                 }
                 else
@@ -88,7 +94,7 @@
                             <div class="header__top__links">
                                 @if (User.Identity?.IsAuthenticated ?? false)
                                 {
-                                    <a asp-action="Profile" asp-controller="Account">Profile</a>
+                                    <a asp-action="Index" asp-controller="Manage">@_userManager.GetUserName(User)</a>
                                     <a asp-action="Logout" asp-controller="Account">Logout</a>
                                 }
                                 else

@@ -5,6 +5,7 @@ using E_ShoppingMVC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Text;
@@ -167,5 +168,79 @@ namespace E_ShoppingMVC.Controllers
         {
             return View();  
         }
-    }
+        [HttpGet]
+		[AllowAnonymous]
+		public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+		[AllowAnonymous]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+		{
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if(user == null || !( await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    TempData["error"] = "Email không tồn tại hoặc chưa được xác thực.";
+                    return View("ForgotPasswordConfirmation");
+                }
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callBackUrl = Url.ActionLink(
+                    action: "ResetPassword",
+                    values: new { code },
+                    protocol: Request.Scheme
+                        );
+                await _emailSender.SendEmailAsync(model.Email, "Reset Password EmaleShop", $"Click <a href='{HtmlEncoder.Default.Encode(callBackUrl)}'>here</>");
+                return RedirectToAction("ForgotPasswordConfirmation");
+            }
+            TempData["error"] = "Invalid information, please try again";
+			return View(model);
+		}
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code=null)
+        {
+            return code == null ? View("error") : View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
+
+            var result = await _userManager.ResetPasswordAsync(user, code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            return View(model);
+        }
+		[HttpGet]
+		[AllowAnonymous]
+		public IActionResult ResetPasswordConfirmation()
+		{
+			return View();
+		}
+	}
 }
