@@ -20,6 +20,8 @@ namespace E_ShoppingMVC.Models
         [NotMapped]
         [FileExtension]
         public IFormFile? ImageUpload { get; set; }
+		[Required(ErrorMessage ="Vui lòng nhập giá sản phẩm")]
+		public decimal Price { get; set; }
 		
     }
 }

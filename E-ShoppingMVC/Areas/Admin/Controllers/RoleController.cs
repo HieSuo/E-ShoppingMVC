@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace E_ShoppingMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    //[Authorize]
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -27,6 +27,11 @@ namespace E_ShoppingMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IdentityRole role)
         {
+            if (!ModelState.IsValid || role.Name == null)
+            {
+                TempData["error"] = "Lỗi khi thêm mới role.";
+                return View(role);
+            }
             if(!_roleManager.RoleExistsAsync(role.Name).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole { Name = role.Name}).GetAwaiter().GetResult();

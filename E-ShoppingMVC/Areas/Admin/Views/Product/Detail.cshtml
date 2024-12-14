@@ -1,4 +1,5 @@
 ﻿@using E_ShoppingMVC.Areas.Admin.Models.ViewModels
+@using System.Globalization
 @model ProductDetailModelView
 @{
     ViewData["title"] = "Product detail";
@@ -118,7 +119,7 @@
                                     <td>@item.SKU</td>
                                     <td style="background-color: @item.Color.HexCode">@item.Color.Name</td>
                                     <td>@item.Size.Name</td>
-                                    <td>@item.Price</td>
+                                    <td>@item.Price.ToString("C0", CultureInfo.GetCultureInfo("vi-VN"))</td>
                                     <td>@item.Quantity</td>
                                     <td class="align-middle text-center">
                                         <a class="btn btn-success" asp-action="EditProductItem" asp-controller="Product" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a>
