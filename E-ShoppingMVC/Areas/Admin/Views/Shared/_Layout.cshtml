@@ -184,6 +184,17 @@
                                     <li class="child"><a asp-controller ="Attribute" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Product's Attributes</a></li>
                                 </ul>
                             </li>
+                            <li class="parent">
+                                <a href="#" onclick="toggle_menu('Shipping_element'); return false" class="">
+                                    <i class="fa fa-pencil-square mr-3"></i>
+                                    <span class="none">Shipping Manager <i class="fa fa-angle-down pull-right align-bottom"></i></span>
+                                </a>
+                                <ul class="children" id="Shipping_element">
+                                    <li class="child"><a asp-controller="Shipping" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Shipping Options</a></li>
+                                    <li class="child"><a asp-controller="Product" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Shipping Method</a></li>
+                                    <li class="child"><a asp-controller="Attribute" asp-action="Index" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Bank Provider</a></li>
+                                </ul>
+                            </li>
 
 
                         </ul>

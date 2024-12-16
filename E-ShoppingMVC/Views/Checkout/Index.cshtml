@@ -1,0 +1,141 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System.Globalization
+@using E_ShoppingMVC.Models.ViewModels
+@model CheckoutViewModel
+@{
+    ViewData["title"] = "Thanh toán đơn hàng của bạn";
+
+}
+<div class="container">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["SuccessMessage"]</div>
+    }
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Checkout</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html">Home</a>
+                            <a href="./shop.html">Order</a>
+                            <span>Checkout</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                <form asp-action="OrderJson" asp-controller="Checkout" method="post">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            <h6 class="checkout__title">Thông tin giao hàng</h6>
+                            <div class="checkout__input">
+                                <p>Tên người nhận<span>*</span></p>
+                                <input name="FullName" value="@Model.FullName">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Phone<span>*</span></p>
+                                        <input name="PhoneNumber" type="text" value="@Model.PhoneNumber">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Email<span>*</span></p>
+                                        <input name="Email" type="text" value="@Model.Email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Tỉnh/Thành phố<span>*</span></p>
+                                <input name="ShipAddressModel.Province" value="@Model.ShipAddressModel.Province">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Quận/Huyện<span>*</span></p>
+                                        <input name="ShipAddressModel.District" value="@Model.ShipAddressModel.District">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Xã/Phường/Thị trấn<span>*</span></p>
+                                        <input name="ShipAddressModel.Ward" value="@Model.ShipAddressModel.Ward">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Địa chỉ chi tiết<span>*</span></p>
+                                <input name="ShipAddressModel.AddressDetail" value="@Model.ShipAddressModel.AddressDetail" placeholder="Street Address" class="checkout__input__add">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products">Product <span>Total</span></div>
+                                <ul class="checkout__total__products">
+                                    @{
+                                        int i = 1;
+                                    }
+                                    @foreach(var item in Model.ShoppingCartItems){
+                                        <li>@(i++), SL:@item.Quantity @item.ProductItem.Product.Name | @item.ProductItem.SKU <span>@((item.ProductItem.Price*item.Quantity).ToString("C0", CultureInfo.GetCultureInfo("vi-VN")))</span></li>
+                                    }
+                                </ul>
+                                <ul class="checkout__total__all">
+                                    <li>Subtotal <span>@(Model.ShoppingCartItems.Sum(p=>p.ProductItem.Price*p.Quantity).ToString("C0", CultureInfo.GetCultureInfo("vi-VN")))</span></li>
+                                    <li>Total <span>@(Model.ShoppingCartItems.Sum(p => p.ProductItem.Price*p.Quantity).ToString("C0", CultureInfo.GetCultureInfo("vi-VN")))</span></li>
+                                </ul>
+                                <p>
+                                    Phương thức thanh toán
+                                </p>
+                                <div class="checkout__input__checkbox">
+                                    <label for="cod">
+                                        Thanh toán khi nhận hàng COD
+                                        <input type="radio" id="cod" name="PaymentType" value="cod" required>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label for="momo">
+                                        Thanh toán bằng ví điện tử MOMO
+                                        <input type="radio" id="momo" name="PaymentType" value="momo" required>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <p>
+                                    Phương thức vận chuyển
+                                </p>
+                                <div class="checkout__input__checkbox">
+                                    <label for="ghtk">
+                                        Giao hàng tiết kiệm
+                                        <input type="radio" id="ghtk" name="ShipMethod" value="ghtk" required>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+</div>
+@section Scripts {
+
+}

@@ -118,7 +118,7 @@
                             <li class="cart__total__price">Subtotal <span>@sum.ToString("C0", CultureInfo.GetCultureInfo("vi-VN"))</span></li>
                             <li class="cart__total__price">Total <span>@sum.ToString("C0", CultureInfo.GetCultureInfo("vi-VN"))</span></li>
                         </ul>
-                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                        <a asp-controller="Checkout" asp-action="Index" class="primary-btn">Proceed to checkout</a>
                     </div>
                 </div>
             </div>

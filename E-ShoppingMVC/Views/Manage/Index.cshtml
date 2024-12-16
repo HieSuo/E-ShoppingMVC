@@ -6,7 +6,7 @@
 
 <div class="container">
 
-    <h1>@ViewData["Title"].</h1>
+    <h2>@ViewData["Title"].</h2>
     <p class="text-success">@ViewData["StatusMessage"]</p>
 
     <div>
@@ -137,6 +137,29 @@
         </dl>
         <h4 class="mb-3">Thông tin vận chuyển</h4>
         <a asp-action="Create" asp-controller="ShippingAddress" class="btn btn-info">Thêm địa chỉ giao hàng</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Tỉnh/Thành Phố</th>
+                    <th scope="col">Quận/Huyện</th>
+                    <th scope="col">Phường/Xã/Thị Trấn</th>
+                    <th scope="col">Địa chỉ chi tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ShipAddresses)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.Province</td>
+                        <td>@item.District</td>
+                        <td>@item.District</td>
+                        <td>@item.AddressDetail</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
 </div>
